@@ -1,2 +1,2 @@
-# SG_VotingSystem
-Voting system for Students government of LNU
+# SG
+Students government of LNU
