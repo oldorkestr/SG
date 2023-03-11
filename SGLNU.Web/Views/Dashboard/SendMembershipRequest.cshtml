@@ -1,0 +1,47 @@
+﻿<!--=============== HOME ===============-->
+@{
+    Layout = "_Layout";
+}
+<section class="services section container" id="services">
+    <h2 class="section__title">Панель керування</h2>
+    <h2 class="section__title-center">Заявка на додавання в систему</h2>
+    <div class="forms__container">
+        <form method="post" role="form"
+              data-ajax-success="Bindgrid"
+              data-ajax="true"
+              data-ajax-method="POST">
+            <div class="row">
+                <div class="col-25">
+                    <h4 class="contact__text" for="fname">Ім'я</h4>
+                </div>
+                <div class="col-75">
+                    <input required="required" type="text" id="fname">
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <h4 class="contact__text" for="fname">Прізвище</h4>
+                </div>
+                <div class="col-75">
+                    <input required="required" type="text" id="lname">
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <h4 class="contact__text" for="lname">E-mail</h4>
+                </div>
+                <div class="col-75">
+                    <input type="text" id="email" disabled required="required" value="@User.Identity.Name">
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <button value="Submit" class="button popup submit__button" data-toggle="modal">
+                    Подати заявку
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

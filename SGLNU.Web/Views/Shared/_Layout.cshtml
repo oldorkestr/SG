@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="ua">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--=============== BOXICONS ===============-->
+    <script src="https://kit.fontawesome.com/b47b2dac61.js" crossorigin="anonymous"></script>
+
+    <!--=============== CSS ===============-->
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/styles.css">
+
+    <title>SgLNU</title>
+</head>
+<body>
+    <!--=============== HEADER ===============-->
+    <header class
+            ="header" id="header">
+        <nav class="nav container">
+            <a asp-controller="Home" asp-action="Index"><img class="nav_logo_img" src="~/img/logo.png" /></a>
+            <div class="nav__menu" id="nav-menu">
+
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a asp-controller="Home" asp-action="Index" class="nav__link active-link">Головна</a>
+                    </li>
+                    <!--@if (User.Identity.IsAuthenticated)
+            {
+                <li class="nav__item">
+                    <a asp-action="Dashboard" asp-controller="Dashboard" class="nav__link">Кабінет <h6>@User.Identity.Name</h6></a>
+                </li>
+            }-->
+                    <i class="fas fa-moon change-theme" id="theme-button"></i>
+                </ul>
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fas fa-grip-horizontal"></i>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="main">
+        @RenderBody()
+    </main>
+
+    <!--=============== FOOTER ===============-->
+    <footer class="footer">
+        <div class="footer__section footer__container container grid">
+
+            <div class="footer__content">
+                <h3 class="footer__title">Карта Сайту</h3>
+                <!--<ul class="footer__links">
+                    <li><a asp-controller="Home" asp-action="Index" class="footer__link">Головна </a></li>
+                    <partial name="_LoginPartial" />
+                </ul>-->
+            </div>
+
+            <div class="footer__social">
+                <a href="https://www.facebook.com/su.lnu.edu.ua" class="footer__social-link"><i class="fab fa-facebook-square"></i></a>
+                <a href="https://t.me/su_lnu" class="footer__social-link"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.instagram.com/su_lnu/" class="footer__social-link"><i class="fab fa-instagram-square"></i></a>
+            </div>
+        </div>
+
+    </footer>
+
+    <!--=============== SCROLL UP ===============-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="fas fa-arrow-circle-up"></i>
+    </a>
+
+    <!--=============== Bootstrap ===============-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--=============== MAIN JS ===============-->
+    <script src="~/js/main.js"></script>
+</body>
+</html>
