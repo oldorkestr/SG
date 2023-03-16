@@ -1,0 +1,14 @@
+﻿@using System.Security.Principal
+
+@if (User.Identity.IsAuthenticated)
+{
+        <li class="nav-item">
+            <a class="nav__links text-dark" asp-controller="Account" asp-action="SignOut">Вийти</a>
+        </li>
+}
+else
+{
+        <li class="nav-item">
+            <a class="nav__links text-dark"  asp-controller="Account" asp-action="SignIn">Увійти <h6>(Для членів студентських організацій)</h6></a>
+        </li>
+}
