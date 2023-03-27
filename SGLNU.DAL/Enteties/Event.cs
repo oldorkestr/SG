@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace SGLNU.DAL.Enteties
+namespace SGLNU.DAL.Entities
 {
     public class Event
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SGLNU.DAL.EF;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,9 +28,9 @@ namespace SGLNU.DAL.Repositories
             return db.Events.Find(id);
         }
 
-        public void Create(Event @event)
+        public Event Create(Event @event)
         {
-            db.Events.Add(@event);
+            return db.Events.Add(@event).Entity;
         }
 
         public void Update(Event @event)
@@ -43,7 +43,7 @@ namespace SGLNU.DAL.Repositories
             return db.Events.Where(predicate).ToList();
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             Event @event = db.Events.Find(id);
             if (@event != null)

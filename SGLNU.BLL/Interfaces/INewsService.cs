@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SGLNU.BLL.DTO;
-using System;
+﻿using SGLNU.BLL.DTO;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGLNU.BLL.Interfaces
 {

@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using SGLNU.BLL.DTO;
-using SGLNU.DAL.Enteties;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SGLNU.DAL.Entities;
 
 namespace SGLNU.BLL.Infrastructure.MapperProfiles
 {
-    class NewsProfile : Profile
+    public class NewsProfile : Profile
     {
         public NewsProfile()
         {

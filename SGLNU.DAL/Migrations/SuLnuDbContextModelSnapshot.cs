@@ -154,7 +154,7 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.AppUser", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -228,7 +228,33 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Document", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Candidate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProgramExtended")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProgramShort")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VotingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VotingId");
+
+                    b.ToTable("Candidates");
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -254,7 +280,7 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("Documents");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Event", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +315,7 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Faculty", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Faculty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -318,7 +344,7 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("Faculties");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.News", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.News", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -350,7 +376,7 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.University", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.University", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -378,6 +404,55 @@ namespace SGLNU.DAL.Migrations
                     b.ToTable("Universities");
                 });
 
+            modelBuilder.Entity("SGLNU.DAL.Entities.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CandidateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
+
+                    b.ToTable("Votes");
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Voting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("FacultyId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Votings");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -389,7 +464,7 @@ namespace SGLNU.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.AppUser", null)
+                    b.HasOne("SGLNU.DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -398,7 +473,7 @@ namespace SGLNU.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.AppUser", null)
+                    b.HasOne("SGLNU.DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -413,7 +488,7 @@ namespace SGLNU.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SGLNU.DAL.Enteties.AppUser", null)
+                    b.HasOne("SGLNU.DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -422,16 +497,25 @@ namespace SGLNU.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.AppUser", null)
+                    b.HasOne("SGLNU.DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Document", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Candidate", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.Faculty", "Faculty")
+                    b.HasOne("SGLNU.DAL.Entities.Voting", null)
+                        .WithMany("Candidates")
+                        .HasForeignKey("VotingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Document", b =>
+                {
+                    b.HasOne("SGLNU.DAL.Entities.Faculty", "Faculty")
                         .WithMany("Documents")
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -440,9 +524,9 @@ namespace SGLNU.DAL.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Event", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Event", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.Faculty", "Faculty")
+                    b.HasOne("SGLNU.DAL.Entities.Faculty", "Faculty")
                         .WithMany()
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -451,9 +535,9 @@ namespace SGLNU.DAL.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Faculty", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Faculty", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.University", "University")
+                    b.HasOne("SGLNU.DAL.Entities.University", "University")
                         .WithMany("Faculties")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -462,9 +546,9 @@ namespace SGLNU.DAL.Migrations
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.News", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.News", b =>
                 {
-                    b.HasOne("SGLNU.DAL.Enteties.Faculty", "Faculty")
+                    b.HasOne("SGLNU.DAL.Entities.Faculty", "Faculty")
                         .WithMany()
                         .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -473,14 +557,42 @@ namespace SGLNU.DAL.Migrations
                     b.Navigation("Faculty");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.Faculty", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.Vote", b =>
+                {
+                    b.HasOne("SGLNU.DAL.Entities.Candidate", null)
+                        .WithMany("Votes")
+                        .HasForeignKey("CandidateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Voting", b =>
+                {
+                    b.HasOne("SGLNU.DAL.Entities.Faculty", "Faculty")
+                        .WithMany()
+                        .HasForeignKey("FacultyId");
+
+                    b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Candidate", b =>
+                {
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Faculty", b =>
                 {
                     b.Navigation("Documents");
                 });
 
-            modelBuilder.Entity("SGLNU.DAL.Enteties.University", b =>
+            modelBuilder.Entity("SGLNU.DAL.Entities.University", b =>
                 {
                     b.Navigation("Faculties");
+                });
+
+            modelBuilder.Entity("SGLNU.DAL.Entities.Voting", b =>
+                {
+                    b.Navigation("Candidates");
                 });
 #pragma warning restore 612, 618
         }

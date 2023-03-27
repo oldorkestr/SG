@@ -1,5 +1,5 @@
 ﻿using SGLNU.BLL.Configs;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

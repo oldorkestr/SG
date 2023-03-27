@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SGLNU.DAL.Enteties
+namespace SGLNU.DAL.Entities
 {
     public class AppUser : IdentityUser
     {

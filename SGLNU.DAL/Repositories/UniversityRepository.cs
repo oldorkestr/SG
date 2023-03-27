@@ -5,7 +5,7 @@ using SGLNU.DAL.EF;
 using SGLNU.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 
 namespace SGLNU.DAL.Repositories
 {
@@ -28,9 +28,9 @@ namespace SGLNU.DAL.Repositories
             return db.Universities.Find(id);
         }
 
-        public void Create(University university)
+        public University Create(University university)
         {
-            db.Universities.Add(university);
+            return db.Universities.Add(university).Entity;
         }
 
         public void Update(University university)
@@ -43,7 +43,7 @@ namespace SGLNU.DAL.Repositories
             return db.Universities.Where(predicate).ToList();
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             University university = db.Universities.Find(id);
             if (university != null)

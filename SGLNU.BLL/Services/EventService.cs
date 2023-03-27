@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using SGLNU.BLL.DTO;
 using SGLNU.BLL.Interfaces;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 
 namespace SGLNU.BLL.Services

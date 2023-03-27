@@ -1,6 +1,6 @@
 ﻿using SGLNU.BLL.DTO;
 using SGLNU.BLL.Interfaces;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

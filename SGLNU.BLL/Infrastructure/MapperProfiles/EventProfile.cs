@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using SGLNU.BLL.DTO;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 
 namespace SGLNU.BLL.Infrastructure.MapperProfiles
 {

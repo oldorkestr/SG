@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SGLNU.BLL.DTO;
 using SGLNU.BLL.Interfaces;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 
 namespace SGLNU.Web.Controllers
 {

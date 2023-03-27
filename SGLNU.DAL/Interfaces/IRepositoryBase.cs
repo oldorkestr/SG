@@ -12,10 +12,10 @@ namespace SGLNU.DAL.Interfaces
 
         IEnumerable<T> Find(Func<T, Boolean> predicate);
 
-        void Create(T item);
+        T Create(T item);
 
         void Update(T item);
 
-        void Delete(string id);
+        void Delete(int id);
     }
 }

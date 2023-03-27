@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SGLNU.BLL.Interfaces;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SuLNU.Web.Models;
 using SuLNU.Web.Models.Interfaces;
 using SuLNU.Web.ViewModels;

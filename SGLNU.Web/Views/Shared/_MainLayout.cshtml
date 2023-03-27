@@ -38,7 +38,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav__item">
-                            <a asp-action="Dashboard" asp-controller="Dashboard" class="nav__link">Кабінет <h6>@User.Identity.Name</h6></a>
+                            <a asp-action="Dashboard" asp-controller="Dashboard" class="nav__link">Кабінет <h6>@User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == "name").Value</h6></a>
                         </li>
                     }
                     <i class="fas fa-moon change-theme" id="theme-button"></i>

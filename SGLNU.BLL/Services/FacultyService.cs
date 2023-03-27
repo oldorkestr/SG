@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SGLNU.BLL.DTO;
 using SGLNU.BLL.Interfaces;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using System;
 using System.Collections.Generic;

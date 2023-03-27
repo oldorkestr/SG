@@ -15,7 +15,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using SGLNU.BLL.Interfaces;
 using SGLNU.DAL.EF;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using SuLNU.Web.Models.Interfaces;
 using SuLNU.Web.Models.Services;
@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using SGLNU.BLL.Services;
 using Microsoft.Extensions.Options;
 using SGLNU.BLL.Configs;
+using SGLNU.BLL.Infrastructure.MapperProfiles;
 
 namespace SGLNU.Web
 {
@@ -68,6 +69,21 @@ namespace SGLNU.Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SuLnuDBConnection")));
 
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new UserProfile());
+                mc.AddProfile(new NewsProfile());
+                mc.AddProfile(new FacultyProfile());
+                mc.AddProfile(new EventProfile());
+                mc.AddProfile(new VotingProfile());
+                mc.AddProfile(new VoteProfile());
+                mc.AddProfile(new CandidateProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddScoped<IEmailConfirmation, EmailConfirmation>();
             services.Configure<EmailServiceSettings>(Configuration.GetSection("EmailServiceSettings"));
             services.AddRazorPages()
@@ -81,6 +97,7 @@ namespace SGLNU.Web
             services.AddTransient<IFacultyService, FacultyService>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IVotingService, VotingService>();
 
             services.Configure<IdentityOptions>(options =>
             {

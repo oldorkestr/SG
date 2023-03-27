@@ -5,7 +5,7 @@ using SGLNU.DAL.EF;
 using SGLNU.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 
 namespace SGLNU.DAL.Repositories
 {
@@ -28,9 +28,9 @@ namespace SGLNU.DAL.Repositories
             return db.News.Find(id);
         }
 
-        public void Create(News news)
+        public News Create(News news)
         {
-            db.News.Add(news);
+            return db.News.Add(news).Entity;
         }
 
         public void Update(News news)
@@ -43,7 +43,7 @@ namespace SGLNU.DAL.Repositories
             return db.News.Where(predicate).ToList();
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             News news = db.News.Find(id);
             if (news != null)

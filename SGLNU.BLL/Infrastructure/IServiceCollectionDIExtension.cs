@@ -1,5 +1,5 @@
 ﻿using SGLNU.DAL.EF;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +31,9 @@ namespace SGLNU.BLL.Infrastructure
                 mc.AddProfile(new NewsProfile());
                 mc.AddProfile(new FacultyProfile());
                 mc.AddProfile(new EventProfile());
+                mc.AddProfile(new VotingProfile());
+                mc.AddProfile(new VoteProfile());
+                mc.AddProfile(new CandidateProfile());
             });
 
             var mapper = mappingConfig.CreateMapper();

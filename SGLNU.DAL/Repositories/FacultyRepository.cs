@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SGLNU.DAL.EF;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,9 +28,9 @@ namespace SGLNU.DAL.Repositories
             return db.Faculties.Find(id);
         }
 
-        public void Create(Faculty faculty)
+        public Faculty Create(Faculty faculty)
         {
-            db.Faculties.Add(faculty);
+            return db.Faculties.Add(faculty).Entity;
         }
 
         public void Update(Faculty faculty)
@@ -43,7 +43,7 @@ namespace SGLNU.DAL.Repositories
             return db.Faculties.Where(predicate).ToList();
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             Faculty faculty = db.Faculties.Find(id);
             if (faculty != null)

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using SGLNU.BLL.DTO;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SGLNU.BLL.Infrastructure.MapperProfiles
 {
-    class FacultyProfile : Profile
+    public class FacultyProfile : Profile
     {
         public FacultyProfile()
         {

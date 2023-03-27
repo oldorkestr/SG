@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SGLNU.DAL.EF;
-using SGLNU.DAL.Enteties;
+using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,9 +28,9 @@ namespace SGLNU.DAL.Repositories
             return db.Documents.Find(id);
         }
 
-        public void Create(Document document)
+        public Document Create(Document document)
         {
-            db.Documents.Add(document);
+            return db.Documents.Add(document).Entity;
         }
 
         public void Update(Document document)
@@ -43,7 +43,7 @@ namespace SGLNU.DAL.Repositories
             return db.Documents.Where(predicate).ToList();
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
             Document document = db.Documents.Find(id);
             if (document != null)

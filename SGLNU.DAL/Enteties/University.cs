@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace SGLNU.DAL.Enteties
+namespace SGLNU.DAL.Entities
 {
     public class University
     {
