@@ -1,4 +1,5 @@
-﻿@model SGLNU.Web.ViewModels.VotingViewModel
+﻿@using SGLNU.Web.ViewModels
+@model SGLNU.Web.ViewModels.VotingViewModel
 @{
     Layout = "_Layout";
 }
@@ -6,7 +7,7 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-    
+
         <div class="form-horizontal">
             <h4>Голосування</h4>
             <hr />
@@ -22,13 +23,21 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.FacultyName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.FacultyId, new SelectList(ViewBag.Faculties, "FacultyId", "Name"))
+                    @Html.ValidationMessageFor(model => model.FacultyId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                 </div>
             </div>
-            
+
             <div class="form-group">
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -39,12 +48,42 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
+                    <input type="submit" value="Зберегти" class="btn btn-default" />
+                    <a asp-action="Votings" asp-controller="Voting" class="nav__link" style="background-color: #04AA6D;color: white;padding: 12px 20px;border: none;border-radius: 35px;cursor: pointer;float: right;">
+                        Скасувати
+                    </a>
                 </div>
             </div>
         </div>
     }
-    <div>
-        @Html.ActionLink("Back to List", "Votings")
-    </div>
+    @if (@Model.Candidates.Any())
+    {
+        <div class="section container">
+            <h3>Кандидати</h3>
+            <ul class="list-inline">
+                @foreach (CandidateViewModel candidate in @Model.Candidates)
+                {
+                    <li class="card list-group-item-info" style="float: left; margin: 10px;">
+                        <div class="nav__link">
+                            <img src="data:image/jpeg;base64,@candidate.Photo">
+                            <b>@candidate.LastName @candidate.FirstName</b>
+                            <p>@candidate.Email</p>
+                            <p>@candidate.ProgramShort</p>
+                        </div>
+                        <a asp-action="EditCandidate" asp-route-votingId=@Model.Id asp-route-candidateId=@candidate.Id asp-controller="Voting" class="nav__link">
+                            <b>редагувати</b>
+                        </a>
+                        <a asp-action="RemoveCandidate" asp-route-candidateId=@candidate.Id asp-controller="Voting" class="nav__link">
+                            <b>видалити</b>
+                        </a>
+                    </li>
+                }
+                <li class="card list-group-item-info" style="float: left; margin: 10px;">
+                    <a asp-action="EditCandidate" asp-route-votingId=@Model.Id asp-controller="Voting" class="nav__link">
+                        <b>Додати кандидата</b>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
 </section>

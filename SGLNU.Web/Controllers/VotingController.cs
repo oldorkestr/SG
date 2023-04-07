@@ -1,8 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using SGLNU.BLL.DTO;
 using SGLNU.BLL.Interfaces;
+using SGLNU.BLL.Services;
 using SGLNU.DAL.Entities;
 using SGLNU.DAL.Interfaces;
 using SGLNU.Web.ViewModels;
@@ -12,18 +21,21 @@ namespace SGLNU.Web.Controllers
     public class VotingController : Controller
     {
         private readonly IVotingService votingService;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICandidateService candidateService;
+        private readonly IFacultyService facultyService;
         private readonly IMapper _mapper;
 
-        public VotingController(IVotingService votingService, IUnitOfWork unitOfWork, IMapper mapper)
+        public VotingController(IVotingService votingService, IMapper mapper, ICandidateService candidateService, IFacultyService facultyService)
         {
             this.votingService = votingService;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            this._mapper = mapper;
+            this.candidateService = candidateService;
+            this.facultyService = facultyService;
         }
 
         [HttpGet]
         [AllowAnonymous]
+        [Route("votings/votings")]
         public IActionResult Votings()
         {
             var votings = User.Identity.IsAuthenticated ?
@@ -34,25 +46,30 @@ namespace SGLNU.Web.Controllers
         }
 
         [HttpGet]
-        [Route("voting/votingEdit/{votingId}")]
-        public IActionResult VotingEdit(int? votingId)
+        [Route("voting/Edit/{id}")]
+        public IActionResult VotingEdit(int id)
         {
-            if (votingId.HasValue)
+            ViewBag.Faculties = _mapper.Map<IEnumerable<FacultyDTO>, IEnumerable<FacultyViewModel>>(facultyService.GetAllFaculties());
+            if (id > 0)
             {
-                var voting = votingService.GetVoting(votingId.Value);
+                var voting = votingService.GetVoting(id);
                 return View(_mapper.Map<VotingDTO, VotingViewModel>(voting));
             }
             else
             {
-                return View(new VotingViewModel());
+                var voting = new VotingViewModel()
+                {
+                    Candidates = new List<CandidateViewModel>()
+                };
+                return View(voting);
             }
         }
 
         [HttpPost]
-        [Route("voting/votingEdit/{votingId}")]
+        [Route("voting/Edit/{id}")]
         public IActionResult VotingEdit(VotingViewModel voting)
         {
-            if (voting.Id.HasValue)
+            if (voting.Id != 0)
             {
                 votingService.UpdateVoting(_mapper.Map<VotingViewModel, VotingDTO>(voting));
             }
@@ -65,7 +82,7 @@ namespace SGLNU.Web.Controllers
         }
 
         [HttpGet]
-        [Route("voting/ActivateVoting/{votingId}")]
+        [Route("voting/Activate/{votingId}")]
         public IActionResult ActivateVoting(int? votingId)
         {
             votingService.ActivateVoting(votingId.Value);
@@ -74,7 +91,7 @@ namespace SGLNU.Web.Controllers
         }
 
         [HttpGet]
-        [Route("voting/DeActivateVoting/{votingId}")]
+        [Route("voting/DeActivate/{votingId}")]
         public IActionResult DeActivateVoting(int? votingId)
         {
             votingService.DeActivateVoting(votingId.Value);
@@ -84,41 +101,87 @@ namespace SGLNU.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("voting/voting/{votingId}")]
-        public IActionResult Voting(int? votingId)
+        [Route("voting/View/{id}")]
+        public IActionResult Voting(int? id)
         {
-            return View(_mapper.Map<VotingDTO, VotingViewModel>(votingService.GetVoting(votingId.Value)));
+            var voting = _mapper.Map<VotingDTO, VotingViewModel>(votingService.GetVoting(id.Value));
+            if (!votingService.VotingAvailable(id.Value, User.Identity.Name))
+            {
+                voting.Message = "Forbidden";
+            }
+            return View(voting);
+        }
+
+        [HttpGet]
+        [Route("voting/EditCandidate/{votingId}")]
+        public IActionResult EditCandidate(int votingId, int? candidateId)
+        {
+            if (candidateId != null)
+            {
+                return View(_mapper.Map<CandidateDTO, CandidateViewModel>(candidateService.GetCandidate(candidateId.Value)));
+            }
+            else
+            {
+                return View(new CandidateViewModel() { VotingId = votingId });
+            }
         }
 
         [HttpPost]
-        public IActionResult AddCandidate(CandidateDTO candidate)
+        [Route("voting/EditCandidate/{votingId}")]
+        public IActionResult EditCandidate(CandidateViewModel candidate, int votingId)
         {
-            votingService.AddCandidate(candidate);
+            var candidateDto = _mapper.Map<CandidateViewModel, CandidateDTO>(candidate);
+            var file = Request.Form.Files["Photo"];
+            if (file != null && file.Length < 1000000 && IsImage(file))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    candidateDto.Photo = ms.ToArray();
+                }
+            }
 
-            return View(_mapper.Map<VotingDTO, VotingViewModel>(votingService.GetVoting(candidate.VotingId)));
+            if (candidate.Id.HasValue)
+            {
+                candidateService.UpdateCandidate(candidateDto);
+            }
+            else
+            {
+                votingService.AddCandidate(candidateDto);
+            }
+
+            return RedirectToAction("VotingEdit", new { id = votingId });
         }
 
-        [HttpPost]
-        public IActionResult RemoveCandidate(CandidateDTO candidate)
+        [HttpGet]
+        [Route("voting/RemoveCandidate")]
+        public IActionResult RemoveCandidate(int candidateId)
         {
-            votingService.RemoveCandidate(candidate);
-
-            return View(_mapper.Map<VotingDTO, VotingViewModel>(votingService.GetVoting(candidate.VotingId)));
+            var voting = votingService.RemoveCandidate(candidateId);
+            return RedirectToAction("VotingEdit", new { id = voting.Id });
         }
 
-        [HttpPost]
-        public IActionResult AddVote(VotingDTO votingDto)
+        [HttpGet]
+        [Route("voting/vote/{votingId}")]
+        public IActionResult AddVote(int votingId, int candidateId)
         {
             string message = "You are not eligible to vote here";
-            if (User.HasClaim(c => c.Value == votingDto.Faculty.Name))
+            //if (User.HasClaim(c => c.Value == votingDto.Faculty.Name))
             {
-                votingService.AddVote(votingDto, User.Identity.Name);
+                votingService.AddVote(votingId, candidateId, User.Identity.Name);
                 message = "Vote accepted";
             }
 
-            return View(_mapper.Map<VotingDTO, VotingViewModel>(votingService.GetVoting(votingDto.Id)));
+            return RedirectToAction("View", new { id = votingId });
         }
 
+
+        private bool IsImage(IFormFile file)
+        {
+            return ((file != null) &&
+                    Regex.IsMatch(file.ContentType, "image/\\S+") &&
+                    (file.Length > 0));
+        }
     }
 
 

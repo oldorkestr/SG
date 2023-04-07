@@ -8,9 +8,11 @@ namespace SGLNU.Web.ViewModels.MapperProfiles
     {
         public VotingViewModelProfile()
         {
-            CreateMap<VotingDTO, VotingViewModel>();
-                //.ForMember(x => x.Message, opt => opt.Ignore());
+            CreateMap<VotingDTO, VotingViewModel>()
+                .ForMember(x => x.FacultyName, f => f.MapFrom(v => v.Faculty.Name));
+                
             CreateMap<VotingViewModel, VotingDTO>();
+                //.ForMember(x => x.Faculty.Name, f => f.MapFrom(v=>v.FacultyName));
         }
     }
 }

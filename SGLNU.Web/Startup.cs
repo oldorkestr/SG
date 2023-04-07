@@ -82,6 +82,7 @@ namespace SGLNU.Web
                 mc.AddProfile(new VotingViewModelProfile());
                 mc.AddProfile(new VoteViewModelProfile());
                 mc.AddProfile(new CandidateViewModelProfile());
+                mc.AddProfile(new FacultyViewModelProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -101,6 +102,7 @@ namespace SGLNU.Web
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IVotingService, VotingService>();
+            services.AddTransient<ICandidateService, CandidateService>();
 
             services.Configure<IdentityOptions>(options =>
             {

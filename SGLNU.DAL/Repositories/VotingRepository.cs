@@ -34,6 +34,7 @@ namespace SGLNU.DAL.Repositories
                 .Votings
                 .Include(v => v.Faculty)
                 .Include(v => v.Candidates)
+                .ThenInclude(c=>c.Votes)
                 .FirstOrDefault(v => v.Id == id);
         }
 

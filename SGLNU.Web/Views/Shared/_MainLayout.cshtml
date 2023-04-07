@@ -38,7 +38,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav__item">
-                            <a asp-action="Votings" asp-controller="Voting" class="nav__link">Голосування</a>
+                            <a asp-action="Votings" asp-controller="Votings" class="nav__link">Голосування</a>
                         </li>
                         <li class="nav__item">
                             <a asp-action="Dashboard" asp-controller="Dashboard" class="nav__link">Кабінет <h6>@User.Identities.FirstOrDefault().Claims.FirstOrDefault(c => c.Type == "name").Value</h6></a>

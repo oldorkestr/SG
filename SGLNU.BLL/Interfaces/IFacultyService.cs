@@ -8,6 +8,7 @@ namespace SGLNU.BLL.Interfaces
     public interface IFacultyService
     {
         public IEnumerable<string> GetAllFacultiesNames();
+        public IEnumerable<FacultyDTO> GetAllFaculties();
         public int GetFacultyIdByName(string FacultyName);
         public string GetFacultyNameById(int facultyId);
     }

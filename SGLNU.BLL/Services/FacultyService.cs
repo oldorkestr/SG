@@ -16,7 +16,7 @@ namespace SGLNU.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public FacultyService() {}
+        public FacultyService() { }
 
         public FacultyService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -31,12 +31,16 @@ namespace SGLNU.BLL.Services
 
         public IEnumerable<string> GetAllFacultiesNames()
         {
-            return _unitOfWork.Faculties.GetAll().Select(f=>f.Name);
+            return _unitOfWork.Faculties.GetAll().Select(f => f.Name);
+        }
+        public IEnumerable<FacultyDTO> GetAllFaculties()
+        {
+            return _mapper.Map<IEnumerable<Faculty>, IEnumerable<FacultyDTO>>(_unitOfWork.Faculties.GetAll());
         }
 
         public int GetFacultyIdByName(string FacultyName)
         {
-            var facultyId=_unitOfWork.Faculties.GetAll().Where(f => f.Name == FacultyName).Select(f => f.Id).First();
+            var facultyId = _unitOfWork.Faculties.GetAll().Where(f => f.Name == FacultyName).Select(f => f.Id).First();
             return facultyId;
         }
 

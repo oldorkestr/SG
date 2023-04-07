@@ -9,6 +9,7 @@ namespace SGLNU.Web.ViewModels.MapperProfiles
         public CandidateProfile()
         {
             CreateMap<Candidate, CandidateDTO>();
+                //.ForMember(x => x.Photo, opt => opt.Ignore());
             CreateMap<CandidateDTO, Candidate>()
                 .ForMember(x => x.Id, opt => opt.Ignore());
         }

@@ -10,5 +10,13 @@ namespace SGLNU.BLL.Interfaces
     public interface ICandidateService
     {
         IEnumerable<CandidateDTO> GetAllCandidates();
+
+        IEnumerable<CandidateDTO> GetCandidates(int votingId);
+
+        public CandidateDTO GetCandidate(int candidateId);
+
+        public void UpdateCandidate(CandidateDTO candidateDTO);
+
+        public void DeleteCandidate(int candidateId);
     }
 }

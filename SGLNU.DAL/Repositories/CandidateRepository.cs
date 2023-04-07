@@ -31,7 +31,7 @@ namespace SGLNU.DAL.Repositories
                 .Include(v => v.Votes)
                 .FirstOrDefault(c => c.Id == id);
         }
-
+        
         public Candidate Create(Candidate candidate)
         {
             return db.Candidates.Add(candidate).Entity;

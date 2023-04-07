@@ -10,32 +10,31 @@
     <ul class="list-group-horizontal">
 
         <li class="list-group-item list-group-item-action">
-            <a asp-action="VotingEdit" asp-controller="Voting" class="nav__link">
+            <a asp-action="Edit" asp-route-id=0 asp-controller="Voting" class="nav__link" style="color:blue">
                 new ->
             </a>
         </li>
         @foreach (VotingDTO item in Model.Votings)
         {
             <li class="list-group-item list-group-item-action">
-                <a asp-action="Voting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                <a asp-action="View" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
                     <b>@item.Faculty.Name</b> - "@item.Title" starts in @item.StartDate.ToShortDateString()
-                </a>
-                <a asp-action="VotingEdit" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
-                    <b>EDIT</b>
                 </a>
                 @if (item.IsActive)
                 {
-                    <a asp-action="DeActivateVoting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                    <a asp-action="DeActivate" asp-route-id=@item.Id asp-controller="Voting" class="nav__link" style="color:blue">
                         <b>Deactivate</b>
                     </a>
                 }
                 else
                 {
-                    <a asp-action="ActivateVoting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                    <a asp-action="Activate" asp-route-id=@item.Id asp-controller="Voting" class="nav__link" style="color:blue">
                         <b>Activate</b>
                     </a>
+                    <a asp-action="Edit" asp-route-id=@item.Id asp-controller="Voting" class="nav__link" style="color:blue">
+                        <b>EDIT</b>
+                    </a>
                 }
-
             </li>
         }
 

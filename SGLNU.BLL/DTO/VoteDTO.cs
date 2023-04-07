@@ -8,6 +8,12 @@ namespace SGLNU.BLL.DTO
 {
     public class VoteDTO
     {
+        public VoteDTO() { }
+        public VoteDTO(string authorEmail, int votingId)
+        {
+            AuthorEmail = authorEmail;
+            VotingId = votingId;
+        }
         public int Id { get; set; }
 
         public string AuthorEmail { get; set; }

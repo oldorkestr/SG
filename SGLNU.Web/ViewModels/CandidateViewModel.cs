@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 
 namespace SGLNU.Web.ViewModels
@@ -23,10 +26,16 @@ namespace SGLNU.Web.ViewModels
 
         public string Email { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Photo { get; set; }
+
         public string ProgramShort { get; set; }
 
         public string ProgramExtended { get; set; }
-
+        
         public int VotingId { get; set; }
 
         public IEnumerable<VoteViewModel> Votes { get; set; }

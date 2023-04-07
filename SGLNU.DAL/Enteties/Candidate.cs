@@ -10,6 +10,12 @@ namespace SGLNU.DAL.Entities
 
         public string Email { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public byte[] Photo { get; set; }
+
         public string ProgramShort { get; set; }
 
         public string ProgramExtended { get; set; }

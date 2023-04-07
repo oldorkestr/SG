@@ -30,8 +30,10 @@ namespace SGLNU.BLL.Interfaces
 
         public VotingDTO AddCandidate(CandidateDTO votingCandidateDTO);
 
-        public VotingDTO RemoveCandidate(CandidateDTO votingCandidateDTO);
+        public VotingDTO RemoveCandidate(int candidateId);
 
-        public VotingDTO AddVote(VotingDTO VotingDTO, string userEmail);
+        public VotingDTO AddVote(int votingId, int candidateId, string userEmail);
+
+        public bool VotingAvailable(int votingId, string userEmail);
     }
 }

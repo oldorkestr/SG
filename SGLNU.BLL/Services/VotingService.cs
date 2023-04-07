@@ -9,7 +9,7 @@ using SGLNU.DAL.Interfaces;
 
 namespace SGLNU.BLL.Services
 {
-    public class VotingService: IVotingService
+    public class VotingService : IVotingService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -82,6 +82,7 @@ namespace SGLNU.BLL.Services
             votingEntity.StartDate = votingDTO.StartDate;
             votingEntity.EndDate = votingDTO.EndDate;
             votingEntity.Title = votingDTO.Title;
+            votingEntity.FacultyId = votingDTO.FacultyId;
             _unitOfWork.Votings.Update(votingEntity);
             _unitOfWork.Save();
         }
@@ -89,9 +90,12 @@ namespace SGLNU.BLL.Services
         public void ActivateVoting(int votingId)
         {
             var votingEntity = _unitOfWork.Votings.Get(votingId);
-            votingEntity.IsActive = true;
-            _unitOfWork.Votings.Update(votingEntity);
-            _unitOfWork.Save();
+            if (votingEntity.Candidates.Any())
+            {
+                votingEntity.IsActive = true;
+                _unitOfWork.Votings.Update(votingEntity);
+                _unitOfWork.Save();
+            }
         }
 
         public void DeActivateVoting(int votingId)
@@ -105,24 +109,12 @@ namespace SGLNU.BLL.Services
         public VotingDTO AddCandidate(CandidateDTO votingCandidateDTO)
         {
             var votingEntity = _unitOfWork.Votings.Get(votingCandidateDTO.VotingId);
-            Candidate candidateEntity = null;
-            if (votingCandidateDTO.Id != null)
+            if (!votingEntity.Candidates.Select(c => c.Email.ToLower()).Contains(votingCandidateDTO.Email.ToLower()))
             {
-                candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
-            }
-            candidateEntity ??= _unitOfWork.Candidates
-                .Create(new Candidate()
-                {
-                    Email = votingCandidateDTO.Email,
-                    ProgramShort = votingCandidateDTO.ProgramShort,
-                    ProgramExtended = votingCandidateDTO.ProgramExtended,
-                    VotingId = votingCandidateDTO.VotingId
-                });
-            if (!votingEntity.Candidates.Contains(candidateEntity))
-            {
+                Candidate candidateEntity = _unitOfWork.Candidates
+                                    .Create(_mapper.Map<CandidateDTO, Candidate>(votingCandidateDTO));
+
                 votingEntity.Candidates.Add(candidateEntity);
-                candidateEntity.VotingId = votingEntity.Id;
-                _unitOfWork.Candidates.Update(candidateEntity);
                 _unitOfWork.Votings.Update(votingEntity);
                 _unitOfWork.Save();
             }
@@ -130,15 +122,11 @@ namespace SGLNU.BLL.Services
             return _mapper.Map<Voting, VotingDTO>(votingEntity);
         }
 
-        public VotingDTO RemoveCandidate(CandidateDTO votingCandidateDTO)
+        public VotingDTO RemoveCandidate(int candidateId)
         {
-            var votingEntity = _unitOfWork.Votings.Get(votingCandidateDTO.VotingId);
-            Candidate candidateEntity = null;
-            if (votingCandidateDTO.Id != null)
-            {
-                candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
-            }
-            if (candidateEntity != null && votingEntity.Candidates.Contains(candidateEntity))
+            Candidate candidateEntity = _unitOfWork.Candidates.Get(candidateId);
+            var votingEntity = _unitOfWork.Votings.Get(candidateEntity.VotingId);
+            if (!votingEntity.IsActive)
             {
                 foreach (var vote in candidateEntity.Votes)
                 {
@@ -150,27 +138,50 @@ namespace SGLNU.BLL.Services
                 _unitOfWork.Votings.Update(votingEntity);
                 _unitOfWork.Save();
             }
+            return _mapper.Map<Voting, VotingDTO>(votingEntity);
+        }
+
+        public VotingDTO AddVote(int votingId, int candidateId, string userEmail)
+        {
+            var votingEntity = _unitOfWork.Votings.Get(votingId);
+            Candidate candidateEntity = _unitOfWork.Candidates.Get(candidateId);
+
+            if (VotingAvailable(votingEntity, userEmail))
+            {
+                Vote newVoteEntity = _unitOfWork.Votes
+                    .Create(new Vote()
+                    {
+                        CandidateId = candidateId,
+                        AuthorEmail = userEmail
+                    });
+                candidateEntity.Votes.Add(newVoteEntity);
+                _unitOfWork.Candidates.Update(candidateEntity);
+                _unitOfWork.Save();
+            }
 
             return _mapper.Map<Voting, VotingDTO>(votingEntity);
         }
 
-        public VotingDTO AddVote(VotingDTO VotingDTO, string userEmail)
+        public bool VotingAvailable(int votingId, string userEmail)
         {
-            var votingEntity = _unitOfWork.Votings.Get(VotingDTO.Id);
-            //if (!votingEntity.Candidates.Select(c => c.Email).Contains(userEmail))
-            //{
-            //    Vote newVoteEntity = _unitOfWork.Votes
-            //        .Create(new Vote()
-            //        {
-            //            VotingId = votingEntity.Id,
-            //            AuthorEmail = userEmail
-            //        });
-            //    votingEntity.Votes.Add(newVoteEntity);
-            //    _unitOfWork.Votings.Update(votingEntity);
-            //    _unitOfWork.Save();
-            //}
+            return VotingAvailable(_unitOfWork.Votings.Get(votingId), userEmail);
+        }
 
-            return _mapper.Map<Voting, VotingDTO>(votingEntity);
+        private bool VotingAvailable(Voting voting, string userEmail)
+        {
+            var votes = new List<Vote>();
+            foreach (var candidate in voting.Candidates)
+            {
+                if (candidate.Votes != null)
+                {
+                    votes.AddRange(candidate.Votes);
+                }
+            }
+
+            var hadCandidates = voting.Candidates.Any();
+            var alreadyVoted = votes.Select(v => v.AuthorEmail).Contains(userEmail);
+            return !alreadyVoted
+                || !hadCandidates;
         }
     }
 }

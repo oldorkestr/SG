@@ -1,17 +1,69 @@
-﻿@using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal
-@using System.Diagnostics.Eventing.Reader
+﻿@using SGLNU.Web.ViewModels
 @{
     Layout = "_Layout";
 }
 <section class="services section container" id="services">
     <h2 class="section__title">Голосування</h2>
-    <h3>@Model.Message</h3>
+    <p style="float: right;">
+        <a asp-action="Votings" asp-controller="Voting" class="nav__link">
+            <b>Повернутись до списку</b>
+        </a>
+    </p>
+    <br />
+    <p style="float: right;">
+        <a asp-action="Edit" asp-route-id=@Model.Id asp-controller="Voting" class="nav__link">
+            <b>Редагувати</b>
+        </a>
+    </p>
+    @if (Model.Message == "Forbidden")
+        {
+            <h3 style="color: red;">Ви вже проголосували тут</h3>
+        }
+    @if (!Model.IsActive)
+    {
+        <h3 style="color: red;">Голосування неактивне!</h3>
+    }
     <p>@Model.Title</p>
-    <p>Факультет: @Model.Faculty.Name</p>
+    <p>Факультет: @Model.FacultyName</p>
     <p>Почнеться: @Model.StartDate.ToShortDateString()</p>
     <p>Закінчиться: @Model.EndDate.ToShortDateString()</p>
-    <p>Активний: @if( Model.IsActive){<b>так</b>}else{<b>ні</b>}</p>
-    <a asp-action="Votings" asp-controller="Voting" class="nav__link">
-        <b>Повернутись до списку</b>
-    </a>
+    <p>
+        Активний: @if (Model.IsActive)
+        {
+            <b>так</b>
+        }
+        else
+        {
+            <b>ні</b>
+        }
+    </p>
+    <br>
+    @if (Model.Candidates.Count > 0)
+    {
+        <h3>Кандидати</h3>
+        <ul class="list-inline">
+            @foreach (CandidateViewModel candidate in @Model.Candidates)
+            {
+                <li class="card list-group-item-info" title=@candidate.ProgramExtended style="float: left; margin: 10px;">
+                    <b>@candidate.LastName @candidate.FirstName</b>
+                    <p>@candidate.Email</p>
+                    <p>@candidate.ProgramShort</p>
+                    <img src="data:image/jpeg;base64,@candidate.Photo">
+                    @if (Model.Message != "Forbidden" && Model.IsActive)
+                    {
+                        <a asp-action="Vote" asp-route-id=@Model.Id asp-route-candidateId=@candidate.Id asp-controller="Voting" class="nav__link">Проголосувати</a>
+                    }
+                    @if (candidate.Votes.Any(v => v.AuthorEmail == User.Identity.Name))
+                    {
+                        <p style="color: red;">Ви вже проголосували за цього кандидата</p>
+                    }
+                </li>
+            }
+        </ul>
+    }
+
+
+
+
+
 </section>

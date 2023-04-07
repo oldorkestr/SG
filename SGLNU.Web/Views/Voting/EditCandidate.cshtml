@@ -1,0 +1,72 @@
+﻿@using SGLNU.Web.ViewModels
+@model SGLNU.Web.ViewModels.CandidateViewModel
+@{
+    Layout = "_Layout";
+}
+<section class="services section container" id="services">
+    @using (Html.BeginForm("EditCandidate", "Voting", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Кандидат</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProgramShort, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ProgramShort, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProgramShort, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProgramExtended, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ProgramExtended, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProgramExtended, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Photo" class="control-label"></label>
+                <input asp-for="@Model.Photo" accept="image/*" type="file"/>
+                <span asp-validation-for="@Model.Photo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Зберегти" class="btn btn-default" />
+                    <a asp-action="Edit" asp-route-id=@Model.VotingId asp-controller="Voting" class="nav__link" style="background-color: #04AA6D;color: white;padding: 12px 20px;border: none;border-radius: 35px;cursor: pointer;float: right;">
+                        Скасувати
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</section>
