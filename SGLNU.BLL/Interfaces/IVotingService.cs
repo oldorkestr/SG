@@ -18,6 +18,8 @@ namespace SGLNU.BLL.Interfaces
 
         public IEnumerable<VotingDTO> GetPastVotings();
 
+        public VotingDTO GetVoting(int id);
+
         public VotingDTO CreateVoting(VotingDTO VotingDTO);
 
         public void UpdateVoting(VotingDTO VotingDTO);

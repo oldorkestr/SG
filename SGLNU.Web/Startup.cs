@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using SGLNU.BLL.Services;
 using Microsoft.Extensions.Options;
 using SGLNU.BLL.Configs;
-using SGLNU.BLL.Infrastructure.MapperProfiles;
+using SGLNU.Web.ViewModels.MapperProfiles;
 
 namespace SGLNU.Web
 {
@@ -79,6 +79,9 @@ namespace SGLNU.Web
                 mc.AddProfile(new VotingProfile());
                 mc.AddProfile(new VoteProfile());
                 mc.AddProfile(new CandidateProfile());
+                mc.AddProfile(new VotingViewModelProfile());
+                mc.AddProfile(new VoteViewModelProfile());
+                mc.AddProfile(new CandidateViewModelProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

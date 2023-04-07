@@ -2,7 +2,7 @@
 using SGLNU.BLL.DTO;
 using SGLNU.DAL.Entities;
 
-namespace SGLNU.BLL.Infrastructure.MapperProfiles
+namespace SGLNU.Web.ViewModels.MapperProfiles
 {
     public class VotingProfile : Profile
     {

@@ -24,7 +24,6 @@ namespace SGLNU.BLL.Services
         public IEnumerable<VotingDTO> GetAllVotings()
         {
             var votingEntities = _unitOfWork.Votings.GetAll().ToList();
-            var votingDTO = _mapper.Map<Voting, VotingDTO>(votingEntities.FirstOrDefault());
             return _mapper.Map<IEnumerable<Voting>, IEnumerable<VotingDTO>>(votingEntities);
         }
 
@@ -71,6 +70,12 @@ namespace SGLNU.BLL.Services
             }
         }
 
+        public VotingDTO GetVoting(int id)
+        {
+            var votingEntity = _unitOfWork.Votings.Get(id);
+            return _mapper.Map<Voting, VotingDTO>(votingEntity);
+        }
+
         public void UpdateVoting(VotingDTO votingDTO)
         {
             var votingEntity = _unitOfWork.Votings.Get(votingDTO.Id);
@@ -100,27 +105,27 @@ namespace SGLNU.BLL.Services
         public VotingDTO AddCandidate(CandidateDTO votingCandidateDTO)
         {
             var votingEntity = _unitOfWork.Votings.Get(votingCandidateDTO.VotingId);
-            //Candidate candidateEntity = null;
-            //if (votingCandidateDTO.Id != null)
-            //{
-            //    candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
-            //}
-            //candidateEntity ??= _unitOfWork.Candidates
-            //    .Create(new Candidate()
-            //    {
-            //        Email = votingCandidateDTO.Email,
-            //        ProgramShort = votingCandidateDTO.ProgramShort,
-            //        ProgramExtended = votingCandidateDTO.ProgramExtended,
-            //        VotingId = votingCandidateDTO.VotingId
-            //    });
-            //if (!votingEntity.Candidates.Contains(candidateEntity))
-            //{
-            //    votingEntity.Candidates.Add(candidateEntity);
-            //    candidateEntity.VotingId = votingEntity.Id;
-            //    _unitOfWork.Candidates.Update(candidateEntity);
-            //    _unitOfWork.Votings.Update(votingEntity);
-            //    _unitOfWork.Save();
-            //}
+            Candidate candidateEntity = null;
+            if (votingCandidateDTO.Id != null)
+            {
+                candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
+            }
+            candidateEntity ??= _unitOfWork.Candidates
+                .Create(new Candidate()
+                {
+                    Email = votingCandidateDTO.Email,
+                    ProgramShort = votingCandidateDTO.ProgramShort,
+                    ProgramExtended = votingCandidateDTO.ProgramExtended,
+                    VotingId = votingCandidateDTO.VotingId
+                });
+            if (!votingEntity.Candidates.Contains(candidateEntity))
+            {
+                votingEntity.Candidates.Add(candidateEntity);
+                candidateEntity.VotingId = votingEntity.Id;
+                _unitOfWork.Candidates.Update(candidateEntity);
+                _unitOfWork.Votings.Update(votingEntity);
+                _unitOfWork.Save();
+            }
 
             return _mapper.Map<Voting, VotingDTO>(votingEntity);
         }
@@ -128,18 +133,23 @@ namespace SGLNU.BLL.Services
         public VotingDTO RemoveCandidate(CandidateDTO votingCandidateDTO)
         {
             var votingEntity = _unitOfWork.Votings.Get(votingCandidateDTO.VotingId);
-            //Candidate candidateEntity = null;
-            //if (votingCandidateDTO.Id != null)
-            //{
-            //    candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
-            //}
-            //if (candidateEntity != null && votingEntity.Candidates.Contains(candidateEntity))
-            //{
-            //    votingEntity.Candidates.Remove(candidateEntity);
-            //    _unitOfWork.Candidates.Delete(candidateEntity.Id);
-            //    _unitOfWork.Votings.Update(votingEntity);
-            //    _unitOfWork.Save();
-            //}
+            Candidate candidateEntity = null;
+            if (votingCandidateDTO.Id != null)
+            {
+                candidateEntity = _unitOfWork.Candidates.Get(votingCandidateDTO.Id.Value);
+            }
+            if (candidateEntity != null && votingEntity.Candidates.Contains(candidateEntity))
+            {
+                foreach (var vote in candidateEntity.Votes)
+                {
+                    _unitOfWork.Votes.Delete(vote.Id);
+                }
+                candidateEntity.Votes.Clear();
+                votingEntity.Candidates.Remove(candidateEntity);
+                _unitOfWork.Candidates.Delete(candidateEntity.Id);
+                _unitOfWork.Votings.Update(votingEntity);
+                _unitOfWork.Save();
+            }
 
             return _mapper.Map<Voting, VotingDTO>(votingEntity);
         }

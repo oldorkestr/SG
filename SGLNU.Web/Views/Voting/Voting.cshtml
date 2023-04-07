@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal
+@using System.Diagnostics.Eventing.Reader
+@{
+    Layout = "_Layout";
+}
+<section class="services section container" id="services">
+    <h2 class="section__title">Голосування</h2>
+    <h3>@Model.Message</h3>
+    <p>@Model.Title</p>
+    <p>Факультет: @Model.Faculty.Name</p>
+    <p>Почнеться: @Model.StartDate.ToShortDateString()</p>
+    <p>Закінчиться: @Model.EndDate.ToShortDateString()</p>
+    <p>Активний: @if( Model.IsActive){<b>так</b>}else{<b>ні</b>}</p>
+    <a asp-action="Votings" asp-controller="Voting" class="nav__link">
+        <b>Повернутись до списку</b>
+    </a>
+</section>

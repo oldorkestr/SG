@@ -1,6 +1,43 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal
+@using System.Diagnostics.Eventing.Reader
+@using SGLNU.BLL.DTO
+@using SGLNU.DAL.Entities
+@{
     Layout = "_Layout";
 }
 <section class="services section container" id="services">
-    <h2 class="section__title">votes</h2>
+    <h2 class="section__title">Голосування</h2>
+    <ul class="list-group-horizontal">
+
+        <li class="list-group-item list-group-item-action">
+            <a asp-action="VotingEdit" asp-controller="Voting" class="nav__link">
+                new ->
+            </a>
+        </li>
+        @foreach (VotingDTO item in Model.Votings)
+        {
+            <li class="list-group-item list-group-item-action">
+                <a asp-action="Voting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                    <b>@item.Faculty.Name</b> - "@item.Title" starts in @item.StartDate.ToShortDateString()
+                </a>
+                <a asp-action="VotingEdit" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                    <b>EDIT</b>
+                </a>
+                @if (item.IsActive)
+                {
+                    <a asp-action="DeActivateVoting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                        <b>Deactivate</b>
+                    </a>
+                }
+                else
+                {
+                    <a asp-action="ActivateVoting" asp-route-id=@item.Id asp-controller="Voting" class="nav__link">
+                        <b>Activate</b>
+                    </a>
+                }
+
+            </li>
+        }
+
+    </ul>
 </section>

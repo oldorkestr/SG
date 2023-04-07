@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using SGLNU.BLL.DTO;
 using SGLNU.DAL.Entities;
 
-namespace SGLNU.BLL.Infrastructure.MapperProfiles
+namespace SGLNU.Web.ViewModels.MapperProfiles
 {
     public class CandidateProfile: Profile
     {
