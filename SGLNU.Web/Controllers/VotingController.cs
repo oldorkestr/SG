@@ -82,6 +82,15 @@ namespace SGLNU.Web.Controllers
         }
 
         [HttpGet]
+        [Route("voting/Delete/{votingId}")]
+        public IActionResult DeleteVoting(int? votingId)
+        {
+            votingService.DeleteVoting(votingId.Value);
+
+            return RedirectToAction("Votings");
+        }
+
+        [HttpGet]
         [Route("voting/Activate/{votingId}")]
         public IActionResult ActivateVoting(int? votingId)
         {

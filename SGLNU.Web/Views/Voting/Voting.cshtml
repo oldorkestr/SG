@@ -45,6 +45,7 @@
             @foreach (CandidateViewModel candidate in @Model.Candidates)
             {
                 <li class="card list-group-item-info" title=@candidate.ProgramExtended style="float: left; margin: 10px;">
+                    <b>Всього віддано @candidate.Votes.Count() голосів</b>
                     <b>@candidate.LastName @candidate.FirstName</b>
                     <p>@candidate.Email</p>
                     <p>@candidate.ProgramShort</p>

@@ -167,6 +167,12 @@ namespace SGLNU.BLL.Services
             return VotingAvailable(_unitOfWork.Votings.Get(votingId), userEmail);
         }
 
+        public void DeleteVoting(int votingId)
+        {
+            _unitOfWork.Votings.Delete(votingId);
+            _unitOfWork.Save();
+        }
+
         private bool VotingAvailable(Voting voting, string userEmail)
         {
             var votes = new List<Vote>();

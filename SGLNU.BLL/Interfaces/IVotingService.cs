@@ -35,5 +35,7 @@ namespace SGLNU.BLL.Interfaces
         public VotingDTO AddVote(int votingId, int candidateId, string userEmail);
 
         public bool VotingAvailable(int votingId, string userEmail);
+        
+        public void DeleteVoting(int votingId);
     }
 }
