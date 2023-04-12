@@ -29,6 +29,7 @@ using SGLNU.BLL.Services;
 using Microsoft.Extensions.Options;
 using SGLNU.BLL.Configs;
 using SGLNU.Web.ViewModels.MapperProfiles;
+using Microsoft.AspNetCore.Http;
 
 namespace SGLNU.Web
 {
@@ -137,6 +138,10 @@ namespace SGLNU.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+            });
+            app.UseCookiePolicy(new CookiePolicyOptions()
+            {
+                MinimumSameSitePolicy = SameSiteMode.Lax
             });
             CreateUserRoles(serviceProvider).Wait();
         }

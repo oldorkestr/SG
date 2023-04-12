@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGLNU.DAL", "SGLNU.DAL\SGLN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGLNU.BLL", "SGLNU.BLL\SGLNU.BLL.csproj", "{FF6CBB12-7075-4553-8C5D-56F660146316}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGLNU.Tests", "SGLNU.Tests\SGLNU.Tests.csproj", "{2BF2A0B7-61E8-4892-B222-9C8A430D08AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FF6CBB12-7075-4553-8C5D-56F660146316}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF6CBB12-7075-4553-8C5D-56F660146316}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF6CBB12-7075-4553-8C5D-56F660146316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BF2A0B7-61E8-4892-B222-9C8A430D08AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF2A0B7-61E8-4892-B222-9C8A430D08AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF2A0B7-61E8-4892-B222-9C8A430D08AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF2A0B7-61E8-4892-B222-9C8A430D08AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

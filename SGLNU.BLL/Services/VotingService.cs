@@ -169,8 +169,16 @@ namespace SGLNU.BLL.Services
 
         public void DeleteVoting(int votingId)
         {
-            _unitOfWork.Votings.Delete(votingId);
-            _unitOfWork.Save();
+            if (_unitOfWork.Votings.Get(votingId) != null)
+            {
+                _unitOfWork.Votings.Delete(votingId);
+                _unitOfWork.Save();
+            }
+            else
+            {
+                //_logger.LogWarning("Could not create new question.");
+                throw new ArgumentException(nameof(votingId));
+            }
         }
 
         private bool VotingAvailable(Voting voting, string userEmail)

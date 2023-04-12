@@ -9,6 +9,7 @@ namespace SGLNU.BLL.DTO
 {
     public class CandidateDTO
     {
+        public CandidateDTO() { }
         public CandidateDTO(string email, string firstName, string lastName,
             byte[] photo, string programShort, string programExtended,
             int votingId, IEnumerable<VoteDTO> votes)

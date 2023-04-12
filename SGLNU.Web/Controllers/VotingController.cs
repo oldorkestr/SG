@@ -157,7 +157,7 @@ namespace SGLNU.Web.Controllers
             else
             {
                 votingService.AddCandidate(candidateDto);
-            }
+            }   
 
             return RedirectToAction("VotingEdit", new { id = votingId });
         }
