@@ -31,23 +31,56 @@ namespace SGLNU.BLL.Services
 
         public IEnumerable<string> GetAllFacultiesNames()
         {
-            return _unitOfWork.Faculties.GetAll().Select(f => f.Name);
-        }
-        public IEnumerable<FacultyDTO> GetAllFaculties()
-        {
-            return _mapper.Map<IEnumerable<Faculty>, IEnumerable<FacultyDTO>>(_unitOfWork.Faculties.GetAll());
+            var faculties = _unitOfWork.Faculties.GetAll();
+            if (faculties != null)
+            {
+                return faculties.Select(f => f.Name);
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
         }
 
-        public int GetFacultyIdByName(string FacultyName)
+        public IEnumerable<FacultyDTO> GetAllFaculties()
         {
-            var facultyId = _unitOfWork.Faculties.GetAll().Where(f => f.Name == FacultyName).Select(f => f.Id).First();
-            return facultyId;
+            var faculties = _unitOfWork.Faculties.GetAll();
+            if (faculties != null)
+            {
+                return _mapper.Map<IEnumerable<Faculty>, IEnumerable<FacultyDTO>>(faculties);
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+        }
+
+        public int GetFacultyIdByName(string facultyName)
+        {
+            var allFaculties = _unitOfWork.Faculties.GetAll();
+            var faculty = allFaculties.FirstOrDefault(f => f.Name == facultyName);
+            if (faculty != null)
+            {
+                return faculty.Id;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(facultyName));
+            }
         }
 
         public string GetFacultyNameById(int facultyId)
         {
-            var FacultyName = _unitOfWork.Faculties.Get(facultyId).Name;
-            return FacultyName;
+            var faculty = _unitOfWork.Faculties.Get(facultyId);
+            if (faculty != null)
+            {
+                return faculty.Name;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(facultyId));
+            }
+
         }
     }
 }
